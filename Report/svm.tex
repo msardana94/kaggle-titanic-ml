@@ -1,0 +1,109 @@
+\documentclass{article}
+%\usepackage{tieu}
+
+\begin{document}
+\title{\sc Support Vector Machines}
+\date{}
+\maketitle
+
+The Parzen density is a linear machine in the kernel feature space; which Parzen kernels satisfy the Mercer condition?  Clearly, not all linear machines in feature space are Parzen densities, for example the linear kernel does not produce a valid density estimate.  All Parzen kernels need to satisfy the integration to one and positivity condition; are these sufficient for the Mercer condition?  The weights for the Parzen density must be non-negative and sum to one, so a natural generalization is to allow the weights to be any convex combination.  Since the Parzen density is a linear machine in an RKHS, what regularized cost function does it minimize?  The Parzen classifier is the mean of the points in feature space, which minimizes the sum of squared distances to the points.  The Parzen classifier maximizes the functional margin with weight $1/n$ for each point, and weight $1/2$ for the weight norm penalty.
+
+SVM has the constraint
+\begin{equation}
+  \sum_i y_i \alpha_i = 0,
+\end{equation}
+which makes the total weight for the positive class equal to that of the negative class.  The Parzen classifier automatically satisfies this constraint since the total weight for each class is one.
+
+\section{Separable Case}
+We are given data
+\begin{equation*}
+(x_i,y_i), \quad x \in R^d, y \in \{-1,1\}.
+\end{equation*}
+We want a linear classifier in an infinite-dimensional kernel space,
+\begin{equation}
+g(x) = \text{sign}(\phi(w) \cdot \phi(x) + b),
+\end{equation}
+where 
+\begin{equation}
+\phi(w) \cdot \phi(x) = K(w,x).
+\end{equation}
+
+The SVM optimization is
+\begin{align}
+\phi^*(w) = \arg \min_{\phi(w)} \frac{1}{2} \norm{\phi(w)}^2, \\
+\text{such that} \quad y_i (\phi(w) \cdot \phi(x_i) + b) \ge 1.
+\end{align}
+So of all the classifiers which correctly classify the data, we want the one closest to the origin.  From a Bayesian perspective, this is choosing the most probable classifier under a zero mean normal prior, which has likelihood above a certain threshold.
+
+The Lagrangian is
+\begin{equation}
+L(\phi(w),b,\alpha) = \frac{1}{2}||\phi(w)||^2 - \sum_i \alpha_i (y_i (\phi(w) \cdot \phi(x_i) + b) - 1).
+\end{equation}
+The stationary conditions are
+\begin{align}
+\pd{L(\phi(w),b,\alpha)}{\phi(w)} = \phi(w) - \sum_i y_i \alpha_i \phi(x_i) = 0,\\
+\pd{L(\phi(w),b,\alpha)}{b} = \sum_i y_i \alpha_i = 0.
+\end{align}
+So the weight vector is a linear combination of the data points:
+\begin{equation}
+\phi(w) = \sum_i y_i \alpha_i \phi(x_i).
+\end{equation}
+
+The classifier is then
+\begin{align}
+g(x) & = \text{sign}\bigg(\sum_i y_i \alpha_i \phi(x_i) \cdot \phi(x) + b\bigg) \\
+& = \text{sign}\bigg(\sum_i y_i \alpha_i K(x_i,x) + b\bigg).
+\end{align}
+Substituting back into the Lagrangian gives the dual cost function
+\begin{align}
+W(\alpha) & = \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} y_i y_j \alpha_i \alpha_j \phi(x_i) \cdot \phi(x_j) \\
+& = \sum_i \alpha_i - \frac{1}{2} \sum_{i,j} y_i y_j \alpha_i \alpha_j K(x_i,x_j).
+\end{align}
+The optmization is now
+\begin{align}
+\hat{\alpha} = \arg \max_\alpha W(\alpha), \\
+\text{such that} \quad \alpha_i \ge 0.
+\end{align}
+
+\subsection{Kernel Density Connection}
+We can write the SVM classifier as
+\begin{align}
+g(x) & = \text{sign}\bigg(\sum_i y_i \alpha_i K(x_i,x) + b\bigg) \\
+& = \text{sign} \bigg(\sum_{i:y_i=1} \alpha_i K(x_i,x) - \sum_{j:y_j=-1} \alpha_j K(x_j,x) + b\bigg) \\
+& = \text{sign} \bigg(h_+(x) - h_-(x) + b\bigg).
+\end{align}
+
+
+\section{Parzen to Kernel SVM}
+Let us now start from a Parzen density perspective.  For a two class problem we can use the following discrimant:
+\begin{equation}
+s(x) = \text{sign}[p(x|1) - p(x|-1)],
+\end{equation}
+by assuming equal class priors $p(1)=p(-1)$.
+We estimate the class conditional densities use Parzen estimates so that:
+\begin{equation}
+p(x|1) - p(x|-1) = \frac{\sum_i \beta_i y_i K(x,x_i)}{2\sum_i \beta_i},
+\end{equation}
+where
+\begin{align}
+\beta_i \ge 0, \\
+\sum_i \beta_i y_i = 0,
+\end{align}
+Essentially we are picking weights or a distribution of the examples while remaining consistent with the equal class priors assumption.
+
+Now the margin of an example under this discriminant is
+\begin{equation}
+m_i = y_i s(x_i) = y_i [p(x_i|1)-p(x_i|-1)],
+\end{equation}
+which is a measure of ``how correctly'' the example is classified.  In other words, large and positive margins correspond to confident and correct classifications.  Now we can write the expected margin of the examples under the Parzen density estimates as:
+\begin{equation}
+E[m] = \frac{\sum_i \beta_i y_i \sum_j \beta_j y_j K(x_i,x_j)}{2\sum_{i=1}^n \beta_i} = \frac{\sum_{i,j} \beta_i \beta_j y_i y_j K(x_i,x_j)}{2\sum_{i=1}^n \beta_i}.
+\end{equation}
+
+The SVM solution seems to choose $\alpha$ such that the worse distribution in terms of classification results, namely a distribution centered on examples lying on the margin.  Recall that in feature space, the SVM chooses the maximal margin hyperplane that statisfies the classification constraints.  This corresponds to minimizing the norm of the weight vector.  In the kernel SVM, the norm of the weight vector is the expected margin.  Thus in a structural risk minimization fashion, the SVM is choosing the weakest Parzen classifier that still correctly classifies the training data.
+
+\nocite{vapnik98}
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

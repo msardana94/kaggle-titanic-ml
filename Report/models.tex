@@ -1,0 +1,162 @@
+\section{Machine Learning Models}
+\vspace{-0.1in}
+
+\subsection{Support Vector Machine}
+
+\subsubsection{Introduction}
+SVMs (Support Vector Machines) are a useful technique for data classification. A classification task usually involves separating data into training and testing sets. Each instance in the training set contains one "target value" (i.e. the class labels) and several "attributes" (i.e. the features or observed variables). The goal of SVM is to produce a model (based on the training data) which predicts the target values of the test data given only the test data attributes.
+
+Here, training vectors $x_i$ are mapped into a higher (maybe infinite) dimensional space by the function $\phi$. SVM finds a linear separating hyperplane with the maximal margin in this higher dimensional space. C > 0 is the penalty parameter of the error term. Furthermore, $K(x_i ,x_j)$ is called the kernel function. Though new kernels are being proposed by researchers, beginners may find in SVM books the following four basic kernels:
+\begin{itemize}
+
+\item linear: $K(x_i , x_j) = x_i^\intercal x_j$.
+
+\item polynomial: $K(x_i , x_j) = (\gamma\times(x_i^\intercal x_j+r))^d , \gamma > 0$.
+
+\item radial basis function (RBF): $K(x_i,x_j) = \frac{1}{{e^(\gamma\times(norm(x_i-x_j)^2))}}, \gamma > 0$.
+
+\item sigmoid: $K(x_i , x_j ) = tanh(\gamma\times(x_i^\intercal x_j) + r)$. Here, $\gamma$, r, and d are kernel parameters.
+\end{itemize}
+
+\subsubsection{Procedure}
+
+We followed the following appproach to perform the classification with SVM:
+\begin{itemize}
+
+\item Transform data to the format of an SVM package
+
+\item Conduct simple scaling on the data(if any)
+
+\item Consider the RBF kernel in SVM package
+
+\item Use cross-validation and grid search to find the best parameter C and $\gamma$
+
+\item Use the best parameter C and $\gamma$ to train the whole training set.
+
+\item Test
+\end{itemize}
+
+Scaling before applying SVM is very important. The main advantage of scaling is to avoid attributes in greater numeric ranges dominating those in smaller numeric ranges. In our data set, there were a lot of categorical variables which is not dealt by SVM. So, we first began with converting those variables to numbers so that it is compatible with SVMs. For this we used \textbf{onehot encoding} which refers to a group of bits among which the legal combinations of values are only those with a single high (1) bit and all the others low (0). For example, the Age took two values: male and female. We mapped male to [0,1] vector and female to [1,0] vector. We did the same for other variables as well. Now, the age and fare were the only continuous variables. There is no standard procedure for using it in SVMs. Mapping it to discrete vectors is one way and scaling it to lower values is another way. We used the first approach and therefore, formed groups for each of the variables based on the similarity in the group which was inferred from the exploratory analysis. \\
+
+Secondly, we chose RBF kernel for classification purpose because of its various advantages. This kernel nonlinearly maps samples into a higher dimensional space so it, unlike the linear kernel, can handle the case when the relation between class labels and attributes is nonlinear. Another reason is the number of hyperparameters which influences the complexity
+of model selection. The polynomial kernel has more hyperparameters than the RBF kernel.
+
+Thirdly, we perform parameter estimation for RBF kernel using cross validation and grid search. There are two parameters for an RBF kernel: C and $\gamma$. It is not known beforehand
+which C and $\gamma$ are best for a given problem. The goal is to identify good (C, $\gamma$) so that the classifier can accurately predict unknown data (i.e. testing data). We use cross validation for estimating the parameters along with grid search. In k-fold cross-validation, we first divide the training set into k subsets of equal size. Sequentially one subset is tested using the classifier trained on the remaining k − 1 subsets. Thus, each instance of the whole training set is predicted once so the cross-validation accuracy is the percentage of data which are correctly classified. For performing cross validation, we need parameter values. So, Various pairs of (C, $\gamma$) values are tried and the one with the best cross-validation accuracy is picked. We got to know that trying exponentially growing sequences of C and $\gamma$ is a practical method to identify good parameters. We chose C values in the set ($2^-5$,$2^-3$,$2^-1$...$2^15$) and $\gamma$ values in the set ($2^-15$,$2^-13$,$2^-11$...$2^3$). We used GridSearchCV function in Scikit-learn library of Python to perform this task. We obtained a range of C and $\gamma$ based on cross-validation results to further fine tune it. We were able to select C value as 8 and $\gamma$ value as 0.125.
+
+\subsubsection{Results}
+After a lot of effort, we obtained an accuracy of 80\% from our Model. We realized that may be due to less data values, SVM is not performing upto our expectation.
+
+\subsection{Random Forest}
+
+\subsubsection{Introduction}
+\begin{enumerate}
+
+\item Random Forest is a versatile machine learning method capable of performing both regression and classification tasks. It also undertakes dimensional reduction methods, treats missing values, outlier values and other essential steps of data exploration, and does a fairly good job especially on data set with categorical variables.
+
+\item In Random Forest, we grow multiple trees as opposed to a single tree in CART model (see comparison between CART and Random Forest here, part1 and part2). To classify a new object based on attributes, each tree gives a classification and we say the tree “votes” for that class. The forest chooses the classification having the most votes (over all the trees in the forest) and in case of regression, it takes the average of outputs by different trees.
+\end{enumerate}
+
+\subsubsection{Procedure}
+\begin{enumerate}
+
+\item Assume number of cases in the training set is N. Then, sample of these N cases is taken at random but with replacement. This sample will be the training set for growing the tree.
+
+\item If there are M input variables, a number m<M is specified such that at each node, m variables are selected at random out of the M. The best split on these m is used to split the node. The value of m is held constant while we grow the forest.
+
+\item Each tree is grown to the largest extent possible and there is no pruning.
+
+\item Predict new data by aggregating the predictions of the ntree trees (i.e., majority votes for classification, average for regression).
+\end{enumerate}
+We used both the Conditional inference Forest and traditional Random Forest for our classification purpose. CI forest have certain advantages over the other as it uses a significance test procedure in order to select variables instead of selecting the variable that maximizes an information measure.
+Here are some of Pros and Cons that we came across while using this model:
+
+Cons:
+\begin{itemize}
+
+\item It surely does a good job at classification but not as good as for regression problem as it does not give continuous output. In case of regression, it doesn’t predict beyond the range in the training data, and that they may over-fit data sets that are particularly noisy.
+
+\item Random Forest can feel like a black box approach for statistical modelers – you have very little control on what the model does. You can at best – try different parameters and random seeds!
+\end{itemize}
+
+Pros:
+\begin{itemize}
+
+\item As I mentioned earlier, this algorithm can solve both type of problems i.e. classification and regression and does a decent estimation at both fronts.
+
+\item One of benefits of Random forest which excites me most is, the power of handle large data set with higher dimensionality. It can handle thousands of input variables and identify most significant variables so it is considered as one of the dimensionality reduction methods. Further, the model outputs Importance of variable, which can be a very handy feature. Look at the below image of variable importance from currently Live Hackathon 3.x.
+
+\item It has an effective method for estimating missing data and maintains accuracy when a large proportion of the data are missing.
+
+\item It has methods for balancing errors in datasets where classes are imbalanced.
+
+\item The capabilities of the above can be extended to unlabeled data, leading to unsupervised clustering, data views and outlier detection.
+\end{itemize}
+
+Random Forest involves sampling of the input data with replacement called as bootstrap sampling. Here one third of the data is not used for training and can be used to testing. These are called the out of bag samples. Error estimated on these out of bag samples is known as out of bag error. Study of error estimates by Out of bag, gives evidence to show that the out-of-bag estimate is as accurate as using a test set of the same size as the training set. Therefore, using the out-of-bag error estimate removes the need for a set aside test set.
+
+Here is a summary of what we did in this model and what all features we used:
+\begin{enumerate}
+
+\item First we extracted the text strings of name for each person with different titles like Capt, Master, Mr., Mrs. Etc and discretize into values: Mr, Master, Miss and Mrs.
+
+\item We used family size as sum of siblings, spouses, parents and children.
+
+\item We created a family as a combination of number of family members and a family id as surname. We found frequency of each group and applied this to the model.
+
+\item We observed that females in 1st class with children had very high chances of survival and therefore we formed a tree for this.
+
+\item We also observed that children(age<18) from 1st and 2nd class who were with their families had higher chances of survival.
+
+\item We made the family size categorizations as small with family members less than 3 and considered this variable too in our model.
+\end{enumerate}
+
+\subsubsection{Results}
+We were able to achieve and accuracy of 82\% after using various features as described above.
+
+\subsection{Logistic Regression}
+
+\begin{enumerate}
+
+\item This is a supervised learning approach that we followed to predict the survival.
+
+\item We selected logistic regression as it is more suitable for binary classification and because of it's simplistic model.
+\item The following libraries have been used in R to perform the logistic regression: library(ggplot2),library(MASS),library(car),suppressWarnings( library(ROCR))
+
+\item The response variable 'Survived' has been converted to factor with levels 1 and 0.
+
+\item In order to test the performance of the algorithm, we had split our training data into 60 : 40 ratio for performing cross validation.
+
+\item Seed value has been set to a value inorder to reproduce the same values every time the algorithm is ran.
+
+\item Glm function has been used with family=binomial and link =logit
+
+lm1=glm(Survived~Sex, family = binomial(link = "logit"), data = traind)
+
+model1 <- glm(ytrain ~Pclass + Sex + Age+SibSp + Parch +Title + FamilySize + FamilyID, family=binomial(link="logit"),data=xtrain)
+
+summary(lm1)
+
+ptest1=predict(lm1,newdata=test,type="response")
+
+\item Accuracy has been tested with different sets of variables as shown below
+
+accuracy:
+
+btest1=floor(ptest1+0.5)
+
+conf.matrix=table(ytest,btest1)
+
+error1=(conf.matrix[1,2]+conf.matrix[2,1])/ntest
+
+error1
+
+accuracy1=1-error1
+
+accuracy1
+
+
+\item We got an accuracy of 85\% with the train set.
+
+\item Then we have run our code on test set to arrive at an accuracy of 78\%.
+\end{enumerate}

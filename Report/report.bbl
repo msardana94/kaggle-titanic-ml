@@ -1,0 +1,22 @@
+\begin{thebibliography}{}
+
+\bibitem[Asur and Huberman, 2010]{asur2010predicting}
+Asur, S. and Huberman, B.~A. (2010).
+\newblock Predicting the future with social media.
+\newblock In {\em Web Intelligence and Intelligent Agent Technology (WI-IAT),
+  2010 IEEE/WIC/ACM International Conference on}, volume~1, pages 492--499.
+  IEEE.
+
+\bibitem[Eliashberg et~al., 2000]{moviemod}
+Eliashberg, J., Jonker, J.-J., Sawhney, M.~S., and Wierenga, B. (2000).
+\newblock Moviemod: An implementable decision-support system for prerelease
+  market evaluation of motion pictures.
+\newblock {\em Marketing Science}, 19(3):226--243.
+
+\bibitem[Sharda and Delen, 2006]{sharda2006predicting}
+Sharda, R. and Delen, D. (2006).
+\newblock Predicting box-office success of motion pictures with neural
+  networks.
+\newblock {\em Expert Systems with Applications}, 30(2):243--254.
+
+\end{thebibliography}

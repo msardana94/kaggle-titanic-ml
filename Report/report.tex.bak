@@ -1,0 +1,173 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage{fancyvrb,subfloat,amsthm,amssymb,mathrsfs,setspace,mathtools,amsmath}%amsmath, latexsym,footmisc
+%\usepackage[T1]{fontenc}
+% \usepackage{pstcol}
+% \usepackage{play}
+\usepackage{fontenc,graphicx,caption,subcaption,epsfig,subfig,float}
+%\usepackage[grey,times]{quotchap}
+\usepackage[nottoc]{tocbibind}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%
+
+\input xy
+\xyoption{all}
+
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\renewcommand{\baselinestretch}{1.5}
+
+
+
+
+\begin{document}
+
+%\pagenumbering{arabic} \setcounter{page}{1}
+
+% --------------- Title page -----------------------
+
+\begin{titlepage}
+\enlargethispage{3cm}
+
+\begin{center}
+
+\vspace*{-2cm}
+
+\textbf{\Large PARALLEL COMPUTATION OF SOME INCOMPRESSIBLE VISCOUS FLOW PROBLEM BY BLOCK DECOMPOSITION}
+
+\vfill
+
+ A Project Report Submitted \\
+for the Course \\[1cm]
+
+{\bf\Large\ MA 498 Project ~I }\\[.1in]
+
+ \vfill
+
+{\large \emph{by}}\\[5pt]
+{\large\bf {Sizil Krishna Goojar}}\\[5pt]
+{\large (Roll No. 10012332)}
+
+\vfill
+\includegraphics[height=2.5cm]{iitglogo}
+
+\vspace*{0.5cm}
+
+{\em\large to the}\\[10pt]
+{\bf\large DEPARTMENT OF MATHEMATICS} \\[5pt]
+{\bf\large \mbox{INDIAN INSTITUTE OF TECHNOLOGY GUWAHATI}}\\[5pt]
+{\bf\large GUWAHATI - 781039, INDIA}\\[10pt]
+{\it\large November 2013}
+\end{center}
+
+\end{titlepage}
+
+\clearpage
+
+% --------------- Certificate page -----------------------
+\pagenumbering{roman} \setcounter{page}{2}
+\begin{center}
+{\Large{\bf{CERTIFICATE}}}
+\end{center}
+%\thispagestyle{empty}
+
+
+\noindent
+This is to certify that the work contained in this project report
+entitled ``{\bf Parallel computation of some incompressible viscous flow problem by block decomposition}" submitted
+by {\bf Sizil Krishna Goojar} ({\bf Roll No.: 10012332}) to Department of Mathematics, Indian Institute of Technology Guwahati
+towards the requirement of the course \textbf{MA 498 Project ~I}
+has been carried out by him under my
+supervision.
+
+\vspace{4cm}
+
+\noindent Guwahati - 781 039 \hfill Dr. Jiten Chandra Kalita\\
+\noindent November 2013  \hfill \\
+
+
+\clearpage
+
+% --------------- Abstract page -----------------------
+\addcontentsline{toc}{chapter}{Abstract}%
+\begin{center}
+{\Large{\bf{ABSTRACT}}}
+\end{center}
+
+The main aim of the project is to obtain the flow pattern of some incompressible viscous fluid by using optimised iterators and algorithms. Further enhancing the speed of computation by diving the problems domain into smaller domains and solving them parallely using advance parallel API's like OpenMP and CUDA. The aim of this first phase is to get familiar with methods of Computational Fluid Dynamics and Solving bigger domain by block decomposition.
+
+
+\clearpage
+% --------------- Acknowledgement page -----------------------
+\addcontentsline{toc}{chapter}{Acknowledgement}%
+\begin{center}
+{\Large{\bf{ACKNOWLEDGEMENT}}}
+\end{center}
+We feel a great privilege in expressing my deepest and most sincere gratitude to my supervisor Dr Jiten C Kalita (Dept. of Mathematics) for the most valuable guidance and influential mentorship provided to us during the course of this project. Due to their technical advices, exemplary guidance, persistent monitoring and constant encouragement throughout the course of our project, we were able to complete the project through various stages. We take this opportunity to express our profound gratitude and deep regards to all other people who helped us in every possible way to get our project comfortably completed.
+\clearpage                                               
+
+\tableofcontents
+\clearpage
+
+\listoffigures
+\clearpage
+%\listoftables
+
+% --------------- Nomenclature page -----------------------
+\addcontentsline{toc}{chapter}{Nomenclature}%
+\chapter*{Nomenclature}
+\begin{tabular}{lll}
+$\rho$ & Density of fluid\\
+$\omega$ & Vorticity function\\
+$\psi$ & Stream function\\
+$t$ & Time\\
+$g$ & Body force per unit mass\\
+$Re$ & Reynold's number\\
+$V$ & Velocity vector\\
+$u$ & Horizontal component of velocity vector\\
+$v$ & Vertical component of velocity vector\\
+$CUDA$ & Compute Unified Device Architecture\\
+$API$ & Application programming interface\\
+$OpenMP$ & Open Multi-Processing
+\end{tabular}
+
+
+
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% =========== Main chapters starts here. Type in separate files and include the filename here. ==
+% ============================
+
+\input chapter1.tex
+
+
+\input chapter2.tex
+
+
+\input chapter3.tex
+
+
+\input conclusion.tex
+
+%\input references.tex
+%\nocite{*}
+%\bibliographystyle{plain}
+%\bibliography{bib}
+\end{document}
+

@@ -1,0 +1,104 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{fancyvrb,subfloat,amsthm,amssymb,mathrsfs,setspace,mathtools,amsmath}%amsmath, latexsym,footmisc
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+% \usepackage{pstcol}
+% \usepackage{play}
+\usepackage{fontenc,graphicx,caption,epsfig,subfig,float}
+%\usepackage[grey,times]{quotchap}
+\usepackage[nottoc]{tocbibind}
+\usepackage[square,authoryear]{natbib}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%
+%\setcitestyle{authoryear}
+\input xy
+\xyoption{all}
+
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage[margin=0.75in]{geometry}
+
+
+\begin{document}
+
+
+% --------------- Title page -----------------------
+
+\begin{titlepage}
+\enlargethispage{3cm}
+
+\begin{center}
+
+\vspace*{0.5cm}
+
+\textbf{\Large Titanic: Machine Learning from Disaster (Kaggle)}\\[2cm]
+
+
+{\large \emph{by}}\\[5pt]
+{\large\bf {Mayank Sardana}}\\[1pt]
+{\large (mas613@pitt.edu)}\\
+{\large\bf {Dimple Varma}}\\[1pt]
+{\large (ddv1@pitt.edu)}\\
+{\large\bf {Charan Teja GR}}\\[1pt]
+{\large (chg81@pitt.edu)}\\[2cm]
+
+\end{center}
+
+\end{titlepage}
+
+\clearpage
+
+\newpage
+
+
+
+% =========== Main chapters starts here. Type in separate files and include the file name here. ==
+% ============================
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\tableofcontents
+\clearpage %\cleardoublepage %for openright
+%\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+%\clearpage %\cleardoublepage %for openright
+%\addcontentsline{toc}{chapter}{List of Tables}
+\clearpage
+
+\input{introduction}
+
+%\input{literature}
+
+\input{eda}
+
+\input{models}
+
+\input{conclusion}
+
+\input{challenges}
+
+\input{feature}
+%\input references.tex
+%\nocite{*}
+%\bibliographystyle{apalike}
+%\bibliography{biblo}
+
+\end{document}
+
